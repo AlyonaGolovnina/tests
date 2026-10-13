@@ -1,52 +1,38 @@
-import { useMemo, useState } from 'react';
-import { products } from './data/products';
+import { useEffect, useState } from 'react';
+import { clearSession, readSession, writeSession } from './auth/session';
+import { DEMO_USERNAME } from './data/demoAuth';
+import { LoginPage } from './pages/LoginPage';
+import { ShopPage } from './pages/ShopPage';
 
 export function App() {
-  const [cartCount, setCartCount] = useState(0);
+  const [username, setUsername] = useState<string | null>(null);
+  const [ready, setReady] = useState(false);
 
-  const cartLabel = useMemo(
-    () => (cartCount === 0 ? 'Корзина пуста' : `В корзине: ${cartCount}`),
-    [cartCount],
-  );
+  useEffect(() => {
+    const session = readSession();
+    if (session?.username === DEMO_USERNAME) {
+      setUsername(session.username);
+    }
+    setReady(true);
+  }, []);
 
-  return (
-    <div className="page">
-      <header className="header" data-testid="site-header">
-        <h1 data-testid="site-title">QA Portfolio Shop</h1>
-        <p className="tagline" data-testid="site-tagline">
-          Учебная витрина для E2E-тестов (GitHub Pages)
-        </p>
-        <p className="cart-status" data-testid="cart-status" aria-live="polite">
-          {cartLabel}
-        </p>
-      </header>
+  function handleLoginSuccess(loggedInUsername: string): void {
+    writeSession({ username: loggedInUsername });
+    setUsername(loggedInUsername);
+  }
 
-      <main className="catalog" data-testid="product-catalog">
-        {products.map((product) => (
-          <article
-            key={product.id}
-            className="card"
-            data-testid={`product-card-${product.id}`}
-          >
-            <h2 data-testid="product-name">{product.name}</h2>
-            <p className="price" data-testid="product-price">
-              {product.priceLabel}
-            </p>
-            <p className="desc">{product.description}</p>
-            <button
-              type="button"
-              data-testid={`add-to-cart-${product.id}`}
-              onClick={() => setCartCount((count) => count + 1)}
-            >
-              В корзину
-            </button>
-          </article>
-        ))}
-      </main>
+  function handleLogout(): void {
+    clearSession();
+    setUsername(null);
+  }
 
-      <footer className="footer" data-testid="site-footer">
-        Pet-project · Playwright · AlyonaGolovnina/tests
-      </footer>
-    </div>
-  );
+  if (!ready) {
+    return null;
+  }
+
+  if (username === null) {
+    return <LoginPage onSuccess={handleLoginSuccess} />;
+  }
+
+  return <ShopPage username={username} onLogout={handleLogout} />;
 }

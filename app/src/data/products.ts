@@ -3,25 +3,33 @@ export type Product = {
   name: string;
   priceLabel: string;
   description: string;
+  imageFile: string;
 };
 
 export const products: Product[] = [
   {
     id: 'notebook',
-    name: 'QA Notebook',
-    priceLabel: '990 ₽',
-    description: 'Блокнот для чек-листов и баг-репортов.',
+    name: 'Кофе «Регрессо»',
+    priceLabel: '130 ₽',
+    description: 'Гарантированно вкусный, без дефектов.',
+    imageFile: 'regresso.jpg',
   },
   {
     id: 'mug',
-    name: 'Automation Mug',
-    priceLabel: '1 290 ₽',
-    description: 'Кружка «Сначала тест, потом прод».',
+    name: 'Кофе «Интегро»',
+    priceLabel: '199 ₽',
+    description: 'Модули вкуса сошлись идеально.',
+    imageFile: 'integrro.jpg',
   },
   {
     id: 'stickers',
-    name: 'Playwright Stickers',
-    priceLabel: '490 ₽',
-    description: 'Стикеры с data-testid для хорошего настроения.',
+    name: 'Кофе «Смокачино 200 ОК»',
+    priceLabel: '288 ₽',
+    description: 'Кофе отвечает. Можно углубляться.',
+    imageFile: 'smokachino.jpg',
   },
 ];
+
+export function productImageUrl(imageFile: string): string {
+  return `${import.meta.env.BASE_URL}products/${imageFile}`;
+}
