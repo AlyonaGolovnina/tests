@@ -65,13 +65,15 @@ export function App() {
         if (username) {
           writeCart(username, next);
         }
-        if (totalItems(next) === 0 && !checkoutUi.orderPlaced) {
-          setCheckoutUi(defaultCheckoutUi);
+        if (totalItems(next) === 0) {
+          setCheckoutUi((currentCheckout) =>
+            currentCheckout.orderPlaced ? currentCheckout : defaultCheckoutUi,
+          );
         }
         return next;
       });
     },
-    [username, checkoutUi.orderPlaced],
+    [username],
   );
 
   const navigate = useCallback(
