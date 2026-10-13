@@ -1,33 +1,53 @@
+import { formatRub } from './format';
+
 export type Product = {
   id: string;
   name: string;
+  priceRub: number;
   priceLabel: string;
   description: string;
   imageFile: string;
 };
 
+function product(
+  id: string,
+  name: string,
+  priceRub: number,
+  description: string,
+  imageFile: string,
+): Product {
+  return {
+    id,
+    name,
+    priceRub,
+    priceLabel: formatRub(priceRub),
+    description,
+    imageFile,
+  };
+}
+
 export const products: Product[] = [
-  {
-    id: 'notebook',
-    name: 'Кофе «Регрессо»',
-    priceLabel: '130 ₽',
-    description: 'Гарантированно вкусный, без дефектов.',
-    imageFile: 'regresso.jpg',
-  },
-  {
-    id: 'mug',
-    name: 'Кофе «Интегро»',
-    priceLabel: '199 ₽',
-    description: 'Модули вкуса сошлись идеально.',
-    imageFile: 'integrro.jpg',
-  },
-  {
-    id: 'stickers',
-    name: 'Кофе «Смокачино 200 ОК»',
-    priceLabel: '288 ₽',
-    description: 'Кофе отвечает. Можно углубляться.',
-    imageFile: 'smokachino.jpg',
-  },
+  product(
+    'notebook',
+    'Кофе «Регрессо»',
+    130,
+    'Гарантированно вкусный, без дефектов.',
+    'regresso.jpg',
+  ),
+  product(
+    'mug',
+    'Кофе «Интегро»',
+    199,
+    'Модули вкуса сошлись идеально.',
+    'integrro.jpg',
+  ),
+  product(
+    'stickers',
+    'Кофе «Смокачино 200 ОК»',
+    288,
+    'Кофе отвечает. Можно углубляться.',
+    'smokachino.jpg',
+  ),
 ];
 
 export function productImageUrl(imageFile: string): string {
