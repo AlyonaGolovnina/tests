@@ -1,12 +1,15 @@
-import { useState, type FormEvent } from 'react';
+import type { FormEvent } from 'react';
 import { getCartLines, cartTotalRub } from '../cart/selectors';
 import type { CartQuantities } from '../cart/types';
 import { CartQuantityControl } from '../components/CartQuantityControl';
 import { formatRub } from '../data/format';
 import { productImageUrl } from '../data/products';
+import type { CheckoutUiState } from '../shop/uiStorage';
 
 type CartPageProps = {
   quantities: CartQuantities;
+  checkoutUi: CheckoutUiState;
+  onCheckoutUiChange: (next: CheckoutUiState) => void;
   onAddOne: (productId: string) => void;
   onRemoveOne: (productId: string) => void;
   onGoToCatalog: () => void;
@@ -15,23 +18,26 @@ type CartPageProps = {
 
 export function CartPage({
   quantities,
+  checkoutUi,
+  onCheckoutUiChange,
   onAddOne,
   onRemoveOne,
   onGoToCatalog,
   onOrderComplete,
 }: CartPageProps) {
-  const [showCheckout, setShowCheckout] = useState(false);
-  const [orderPlaced, setOrderPlaced] = useState(false);
-  const [address, setAddress] = useState('');
-  const [phone, setPhone] = useState('');
+  const { showCheckout, address, phone, orderPlaced } = checkoutUi;
 
   const lines = getCartLines(quantities);
   const totalRub = cartTotalRub(quantities);
 
   function handleCheckoutSubmit(event: FormEvent<HTMLFormElement>): void {
     event.preventDefault();
-    setOrderPlaced(true);
-    setShowCheckout(false);
+    onCheckoutUiChange({
+      showCheckout: false,
+      address,
+      phone,
+      orderPlaced: true,
+    });
     onOrderComplete();
   }
 
@@ -138,7 +144,12 @@ export function CartPage({
                 className="auth-input"
                 data-testid="checkout-address"
                 value={address}
-                onChange={(event) => setAddress(event.target.value)}
+                onChange={(event) =>
+                  onCheckoutUiChange({
+                    ...checkoutUi,
+                    address: event.target.value,
+                  })
+                }
                 required
               />
             </label>
@@ -151,7 +162,12 @@ export function CartPage({
                 data-testid="checkout-phone"
                 autoComplete="tel"
                 value={phone}
-                onChange={(event) => setPhone(event.target.value)}
+                onChange={(event) =>
+                  onCheckoutUiChange({
+                    ...checkoutUi,
+                    phone: event.target.value,
+                  })
+                }
                 required
               />
             </label>
@@ -168,7 +184,9 @@ export function CartPage({
             type="button"
             className="cart-toggle cart-checkout-btn"
             data-testid="checkout-button"
-            onClick={() => setShowCheckout(true)}
+            onClick={() =>
+              onCheckoutUiChange({ ...checkoutUi, showCheckout: true })
+            }
           >
             Оформить заказ
           </button>
