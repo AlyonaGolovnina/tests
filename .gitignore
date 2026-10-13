@@ -1,11 +1,15 @@
-
-# Playwright
+# Dependencies & build
 node_modules/
 app/node_modules/
 app/dist/
 dist/
-/test-results/
-/playwright-report/
-/blob-report/
-/playwright/.cache/
-/playwright/.auth/
+
+# Playwright (локальная ветка saucedemo-sandbox)
+playwright-report/
+test-results/
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
