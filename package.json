@@ -1,0 +1,11 @@
+{
+  "name": "qa-coffee-shop-workspace",
+  "private": true,
+  "description": "Обёртка: скрипты делегируются в app/",
+  "scripts": {
+    "dev": "npm run dev --prefix app",
+    "build": "npm run build --prefix app",
+    "preview": "npm run preview --prefix app",
+    "postinstall": "npm install --prefix app"
+  }
+}

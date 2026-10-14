@@ -1,6 +1,8 @@
-# QA Portfolio Shop
+# QA Coffee Shop
 
-Учебная витрина для портфолио QA: простой интернет-магазин на **React + Vite**, задеплоенный на **GitHub Pages**.
+Учебная витрина для портфолио QA: каталог, корзина и оформление заказа на **React + TypeScript + Vite**, деплой на **GitHub Pages**.
+
+Демо-вход: логин `QA_user`, пароль `Brew4QA!` (без бэкенда, `sessionStorage`).
 
 **Live:** https://alyonagolovnina.github.io/tests/
 
@@ -15,6 +17,15 @@
 Ключевые элементы помечены **`data-testid`** — удобно для будущих E2E (Playwright).
 
 ## Локальный запуск
+
+Из **корня** репозитория (рекомендуется):
+
+```bash
+npm install
+npm run dev
+```
+
+Или из папки `app/`:
 
 ```bash
 cd app
